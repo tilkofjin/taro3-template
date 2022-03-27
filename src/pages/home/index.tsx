@@ -1,27 +1,23 @@
 import { View, Text } from "@tarojs/components";
-import { Icon, NavBar } from "@antmjs/vantui";
-import { browser } from "@/utils/index";
 import { login } from "@/services/login";
+import { useEffect } from "react";
+import { getStorage } from "@/utils/index";
 import styles from "./index.less";
 
-const { weixin } = browser();
-
 const Home: React.FC = () => {
+  const userInfo = getStorage("userInfo");
   const goLogin = async () => {
-    await login({ username: "ceshi", password: "123456" });
+    await login({
+      nickName: "王小二",
+      code: "loginCode",
+      avatar: "userAvatar"
+    });
   };
+
+  useEffect(() => {}, []);
 
   return (
     <View className={styles.container}>
-      {process.env.TARO_ENV && !weixin ? (
-        <NavBar
-          title='首页'
-          leftArrow={false}
-          safeAreaInsetTop={false}
-          renderLeft={<Icon name='wap-home-o' className='icon' size='36' />}
-          renderRight={<Icon name='search' className='icon' size='36' />}
-        />
-      ) : null}
       <View onClick={() => goLogin()}>
         <Text>Hello world!</Text>
       </View>

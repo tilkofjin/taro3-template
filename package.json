@@ -2,7 +2,7 @@
   "name": "taro3-template",
   "version": "1.0.0",
   "private": true,
-  "description": "通用 taro3 基础脚手架!~",
+  "description": "通用 taro3.4.2 基础脚手架!~",
   "templateInfo": {
     "name": "default",
     "typescript": true,

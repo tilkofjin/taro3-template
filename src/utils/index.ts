@@ -1,16 +1,63 @@
 import Taro from "@tarojs/taro"
+import { getBaseUrl } from "@/config/env";
+
+// 获取完整请求路径
+export const getFullUrl = (url: string, debug?: boolean) => {
+  const { baseUrl, debugUrl } = getBaseUrl();
+
+  if (!url || url.includes('https://' || 'http://')) {
+    throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
+  }
+  return (debug && debugUrl ? debugUrl : baseUrl) + url
+}
+
+// 获取完整服务器图片路径
+export const getFullImgUrl = (url?: string) => {
+  const { baseImgUrl } = getBaseUrl();
+
+  if (!url || url.includes('https://' || 'http://')) {
+    throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
+  }
+  return `${baseImgUrl}?path=${url}`
+}
+
+// 获取缓存数据
+export const getStorage = (key: string) => {
+  const res = Taro.getStorageSync(key) || ''
+  return res
+}
+
+// 更新缓存数据
+export const updateStorage = (key: string, data: any) => {
+  try {
+    return Taro.setStorageSync(key, data)
+  } catch (e) {
+    console.log("🚀 ~ file: request.ts ~ line 14 ~ updateStorage ~ e", e)
+  }
+}
 
 // 获取当前路由
-export const getCurRoute = () => {
+export const getCurrentPageUrl  = () => {
   if (process.env.TARO_ENV === 'weapp') {
-    const curPages = Taro.getCurrentPages()
-    return curPages[curPages.length - 1].route
+    const pages = Taro.getCurrentPages()
+    const currentPage = pages[pages.length - 1]
+    return currentPage.route
   } else {
     const location = window.location
-    console.log("🚀 ~ file: index.ts ~ line 10 ~ getCurRoute ~ location", location.href)
     return location.href
   }
 }
+
+// 跳转至登录页
+export const pageToLogin = () => {
+  const path = getCurrentPageUrl()
+  if (!path.includes('login')) {
+    Taro.navigateTo({
+      url: "/pages/login/index"
+    });
+  }
+}
+
 
 /** 判断用户浏览器终端信息
  *  browser.versions.ios 判断是否是IOS设备
