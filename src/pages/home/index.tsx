@@ -1,16 +1,14 @@
+import Taro from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
-import { login } from "@/services/login";
 import { useEffect } from "react";
 import { getStorage } from "@/utils/index";
-import styles from "./index.less";
+import styles from "./index.module.less";
 
 const Home: React.FC = () => {
   const userInfo = getStorage("userInfo");
   const goLogin = async () => {
-    await login({
-      nickName: "王小二",
-      code: "loginCode",
-      avatar: "userAvatar"
+    Taro.navigateTo({
+      url: `/pages/login/index`
     });
   };
 

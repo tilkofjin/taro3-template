@@ -6,19 +6,9 @@ module.exports = {
       "taro",
       {
         framework: "react",
-        ts: true
+        ts: true,
+        hot: true,
       }
-    ]
-  ],
-  plugins: [
-    [
-      "import",
-      {
-        libraryName: "@antmjs/vantui",
-        libraryDirectory: "es",
-        style: true
-      },
-      "@antmjs/vantui"
     ]
   ],
   plugins: [

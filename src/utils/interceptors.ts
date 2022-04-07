@@ -20,55 +20,44 @@ const codeMessage: Record<number, string> = {
   504: '网关超时。',
 };
 
-// 日志
-const logInterceptor = (chain) => {
+const interceptor = (chain) => {
   const requestParams = chain.requestParams
   const { method, data, url } = requestParams
   // 是否打印日志
   const accountInfo = process.env.TARO_ENV === 'weapp' && Taro.getAccountInfoSync();
   const { envVersion }: any = accountInfo && accountInfo.miniProgram;
-  const getConsole = (process.env.NODE_ENV === 'production' || envVersion === 'release') ?? false
-  if (getConsole) {
-    console.log(
-      `请求时间: ${new Date().toLocaleString()} \n请求方式： ${method} \n请求地址：${url} \n请求数据: ${JSON.stringify(data)}`
-    );
-  }
+  const getConsole = (process.env.NODE_ENV === 'production' || envVersion === 'release' || process.env.TARO_ENV === 'h5') ?? false
+  console.log(`请求：http ${method || 'GET'} --> ${url} data: `, data)
+
   return chain.proceed(requestParams)
     .then(res => {
       if (getConsole) {
         console.log(
-          `接口响应时间: ${new Date().toLocaleString()} \n响应数据: ${JSON.stringify(res?.data)}`
+          `响应: ${new Date().toLocaleString()}: http <-- ${url} result:`, res?.data
         );
       }
-      return res
+      // 5000以上为后端自定义的状态码
+      switch (res.data.code) {
+        case 404:
+          return Promise.reject(codeMessage[404])
+        case 500:
+          return Promise.reject(codeMessage[500])
+        case 502:
+          return Promise.reject(codeMessage[502])
+        case 403:
+          Taro.setStorageSync("token", "")
+          pageToLogin()
+          return Promise.reject("抱歉，您没有权限访问");
+        case 401:
+          Taro.setStorageSync("token", "")
+          pageToLogin()
+          return Promise.reject(codeMessage[401])
+        case 200:
+          return res.data
+        default:
+      }
+      return res.data
     })
 }
 
-
-const customInterceptor = (chain) => {
-  const requestParams = chain.requestParams
-  return chain.proceed(requestParams).then((res: any) => {
-    // 只要请求成功，不管返回什么状态码，都走这个回调
-    switch (res.data.code) {
-      case 404:
-        return Promise.reject(codeMessage[404])
-      case 502:
-        return Promise.reject(codeMessage[502])
-      case 403:
-        Taro.setStorageSync("token", "")
-        pageToLogin()
-        // TODO 根据自身业务修改
-        return Promise.reject("抱歉，您没有权限访问");
-      case 401:
-        Taro.setStorageSync("token", "")
-        pageToLogin()
-        return Promise.reject(codeMessage[401])
-      case 200:
-        return res.data
-    }
-  })
-}
-
-const interceptors = [customInterceptor, logInterceptor]
-
-export default interceptors
+export default interceptor

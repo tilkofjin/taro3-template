@@ -1,8 +1,8 @@
 import Taro from "@tarojs/taro";
 import { getFullUrl } from "./index";
-import interceptors from "./interceptors";
+import interceptor from "./interceptors";
 
-interceptors.forEach(interceptorItem => Taro.addInterceptor(interceptorItem))
+Taro.addInterceptor(interceptor)
 
 // 请求方法
 export const request = (options) => {

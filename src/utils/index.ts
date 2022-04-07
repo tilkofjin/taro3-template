@@ -1,20 +1,18 @@
 import Taro from "@tarojs/taro"
 import { getBaseUrl } from "@/config/env";
 
-// 获取完整请求路径
-export const getFullUrl = (url: string, debug?: boolean) => {
-  const { baseUrl, debugUrl } = getBaseUrl();
+const { baseUrl, baseImgUrl } = getBaseUrl();
 
+// 获取完整请求路径
+export const getFullUrl = (url: string) => {
   if (!url || url.includes('https://' || 'http://')) {
     throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
   }
-  return (debug && debugUrl ? debugUrl : baseUrl) + url
+  return baseUrl + url
 }
 
 // 获取完整服务器图片路径
-export const getFullImgUrl = (url?: string) => {
-  const { baseImgUrl } = getBaseUrl();
-
+export const getFullImgUrl = (url: string) => {
   if (!url || url.includes('https://' || 'http://')) {
     throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
   }
@@ -37,7 +35,7 @@ export const updateStorage = (key: string, data: any) => {
 }
 
 // 获取当前路由
-export const getCurrentPageUrl  = () => {
+export const getCurrentPageUrl = () => {
   if (process.env.TARO_ENV === 'weapp') {
     const pages = Taro.getCurrentPages()
     const currentPage = pages[pages.length - 1]
@@ -85,8 +83,20 @@ export const browser = () => {
 // 防抖
 export const debounce = (fuc: Function, delay = 1000) => {
   let timer: ReturnType<typeof setTimeout>
-  return (...arg: any[]) => {
+  return (...arg) => {
     clearTimeout(timer)
     timer = setTimeout(() => fuc.apply(this, arg), delay)
+  }
+}
+
+// 节流
+export const throttle = (fuc: Function, delay = 500) => {
+  let previous = 0
+  return (...args) => {
+    const now = Date.now()
+    if (now - previous > delay) {
+      fuc.apply(this, args)
+      previous = now
+    }
   }
 }
