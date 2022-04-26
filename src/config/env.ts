@@ -27,8 +27,7 @@ export const getBaseUrl = () => {
     }
   }
   if (process.env.TARO_ENV === 'h5') {
-    baseRequest.baseUrl = '/proxyH5';
-    baseRequest.debugUrl = '/localDebugH5';
+    baseRequest.baseUrl = '/api';
   }
   return baseRequest
 }

@@ -1,8 +1,10 @@
 import path from "path";
 import pxtransform from "postcss-pxtransform";
+// eslint-disable-next-line import/no-commonjs
+const pkg = require("../package.json");
 
 const config = {
-  projectName: "taro3-template",
+  projectName: pkg.name,
   date: "2022-2-23",
   designWidth: 750,
   deviceRatio: {

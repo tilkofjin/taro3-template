@@ -2,8 +2,7 @@ module.exports = {
   env: {
     NODE_ENV: '"production"'
   },
-  defineConstants: {
-  },
+  defineConstants: {},
   mini: {},
   h5: {
     /**
@@ -33,5 +32,14 @@ module.exports = {
     //       postProcess: (context) => ({ ...context, outputPath: path.join(staticDir, 'index.html') })
     //     }))
     // }
+    devServer: {
+      proxy: {
+        "/api": {
+          target: "",
+          changeOrigin: true,
+          pathRewrite: { "^": "" }
+        }
+      }
+    }
   }
-}
+};

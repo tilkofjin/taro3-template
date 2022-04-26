@@ -1,3 +1,12 @@
+const getAppId = () => {
+  switch (process.env.TARO_ENV) {
+    case 'weapp':
+      return "weappId"
+    case 'h5':
+      return 'app'  // 默认值对应 index.html 中的 Id 根节点，默认即可，无需修改
+  }
+}
+
 export default defineAppConfig({
   pages: [
     'pages/personalCenter/index',
@@ -40,6 +49,6 @@ export default defineAppConfig({
       desc: '你的位置信息将用于小程序位置接口的效果展示'
     }
   },
-  appId: "",  // h5 端运行时 appId 须为空，否则编译会报错
+  appId: getAppId(),
   requiredBackgroundModes: ["audio", "location"],
 })

@@ -1,31 +1,34 @@
 import Taro from "@tarojs/taro";
 import { getFullUrl } from "./index";
-import interceptor from "./interceptors";
+import interceptor, { erroStatus } from "./interceptors";
 
 Taro.addInterceptor(interceptor)
 
 // 请求方法
-export const request = (options) => {
+export const request = async (options) => {
   const { url, data, method, header } = options
-  const headerObj = { 'content-type': 'application/json', token: Taro.getStorageSync('token'), ...header }
   const config = {
     url: getFullUrl(url),
     data,
     method: method.toUpperCase(),
-    header: headerObj
+    header,
   };
-  return Taro.request(config) as RequestRes.ResData
-
+  try {
+    return await Taro.request(config) as RequestRes.ResData
+  } catch (error) {
+    erroStatus(error.status)
+  }
 }
 
 // 上传文件
 export const uploadFileRequest = (options) => {
-  const { url, name, formData, filePath, showToast = true } = options
+  const { url, name, formData, fileName, filePath, showToast = true } = options
   Taro.showLoading({ title: '文件上传中...' })
   const uploadTask = Taro.uploadFile({
     url: getFullUrl(url),
     filePath,
     name,
+    fileName,
     formData,
     success: res => {
       Taro.hideLoading()

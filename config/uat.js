@@ -8,11 +8,11 @@ module.exports = {
   h5: {
     devServer: {
       proxy: {
-        "/proxyH5/": {
+        "/api": {
           target: '',
           changeOrigin: true,
           pathRewrite: {
-            "^/proxyH5": "",
+            "^": "",
           },
         },
       },

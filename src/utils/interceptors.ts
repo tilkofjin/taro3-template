@@ -20,44 +20,65 @@ const codeMessage: Record<number, string> = {
   504: '网关超时。',
 };
 
+export const erroStatus = (statusCode: number, data?: any) => {
+  Taro.hideLoading()
+  switch (statusCode) {
+    case 401:
+    case 403:
+      Taro.setStorageSync("token", "")
+      pageToLogin()
+      return Promise.reject(codeMessage[statusCode])
+    case 404:
+    case 500:
+    case 502:
+      return Promise.reject(codeMessage[statusCode])
+    default:
+      return data
+  }
+}
+
 const interceptor = (chain) => {
+  const token = Taro.getStorageSync('token')
   const requestParams = chain.requestParams
   const { method, data, url } = requestParams
+  requestParams.header = {
+    ...requestParams.header,
+    token,
+  }
   // 是否打印日志
   const accountInfo = process.env.TARO_ENV === 'weapp' && Taro.getAccountInfoSync();
   const { envVersion }: any = accountInfo && accountInfo.miniProgram;
-  const getConsole = (process.env.NODE_ENV === 'production' || envVersion === 'release' || process.env.TARO_ENV === 'h5') ?? false
+  const getConsole = process.env.NODE_ENV === 'production' || envVersion === 'release' || process.env.TARO_ENV === 'h5'
   console.log(`请求：http ${method || 'GET'} --> ${url} data: `, data)
 
-  return chain.proceed(requestParams)
-    .then(res => {
-      if (getConsole) {
-        console.log(
-          `响应: ${new Date().toLocaleString()}: http <-- ${url} result:`, res?.data
-        );
-      }
-      // 5000以上为后端自定义的状态码
-      switch (res.data.code) {
-        case 404:
-          return Promise.reject(codeMessage[404])
-        case 500:
-          return Promise.reject(codeMessage[500])
-        case 502:
-          return Promise.reject(codeMessage[502])
-        case 403:
-          Taro.setStorageSync("token", "")
-          pageToLogin()
-          return Promise.reject("抱歉，您没有权限访问");
-        case 401:
-          Taro.setStorageSync("token", "")
-          pageToLogin()
-          return Promise.reject(codeMessage[401])
-        case 200:
-          return res.data
-        default:
-      }
-      return res.data
-    })
+  try {
+    return chain.proceed(requestParams)
+      .then(res => {
+        if (getConsole) {
+          console.log(
+            `响应: ${new Date().toLocaleString()}: http <-- ${url} result:`, res?.data
+          );
+        }
+        const msg: string = res?.data?.code && codeMessage[res?.data?.code] || res?.data?.message
+        switch (res.data.code) {
+          case 401:
+          case 403:
+            Taro.setStorageSync("token", "")
+            pageToLogin()
+            return Promise.reject(msg)
+          case 404:
+          case 500:
+          case 502:
+            return Promise.reject(msg)
+          default:
+            return res.data
+        }
+      })
+  } catch (error) {
+    Taro.hideLoading()
+    return Promise.reject(error)
+  }
+
 }
 
 export default interceptor
