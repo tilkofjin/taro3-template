@@ -5,17 +5,15 @@ const { baseUrl, baseImgUrl } = getBaseUrl();
 
 // 获取完整请求路径
 export const getFullUrl = (url: string) => {
-  if (!url || url.includes('https://' || 'http://')) {
-    throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
-  }
+  if (!url) throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
+  if (url.includes('https://') || url.includes('http://')) return url
   return baseUrl + url
 }
 
 // 获取完整服务器图片路径
 export const getFullImgUrl = (url: string) => {
-  if (!url || url.includes('https://' || 'http://')) {
-    throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
-  }
+  if (!url) throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
+  if (url.includes('https://') || url.includes('http://')) return url
   return `${baseImgUrl}?path=${url}`
 }
 
@@ -78,6 +76,11 @@ export const browser = () => {
     };
   }
   return {}
+}
+
+// 生成随机数
+export const randomId = len => {
+  return Math.random().toString(36).substring(3, len);
 }
 
 // 防抖

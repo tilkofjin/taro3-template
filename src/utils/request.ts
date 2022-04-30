@@ -21,8 +21,8 @@ export const request = async (options) => {
 }
 
 // 上传文件
-export const uploadFileRequest = (options) => {
-  const { url, name, formData, fileName, filePath, showToast = true } = options
+export const uploadFileRequest = async (options) => {
+  const { url, name, fileName, formData, filePath, showToast = true } = options
   Taro.showLoading({ title: '文件上传中...' })
   const uploadTask = Taro.uploadFile({
     url: getFullUrl(url),
@@ -30,26 +30,36 @@ export const uploadFileRequest = (options) => {
     name,
     fileName,
     formData,
-    success: res => {
-      Taro.hideLoading()
-      const result = JSON.parse(res?.data) as RequestRes.ResData
-      const { message } = result
+    success: uploadRes => {
+      const result = JSON.parse(uploadRes?.data) as RequestRes.ResData
       if (showToast) {
         Taro.showToast({
-          title: `文件上传${message}`,
+          title: `文件上传${result?.message}`,
           duration: 2500,
           icon: 'none'
         })
       }
     },
+    fail: uploadError => {
+      Taro.showToast({
+        title: `抱歉，文件上传${uploadError},请重新上传`,
+        duration: 2500,
+        icon: 'none'
+      })
+    },
+    complete: () => {
+      Taro.hideLoading()
+    }
   });
   // 打印上传文件进度日志
   uploadTask.progress((res) => {
     console.log('上传进度', res.progress)
     console.log('已经上传的数据长度', res.totalBytesSent)
-    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
+    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSent)
   })
-  return uploadTask.then((res: any) => JSON.parse(res.data))
+  return await uploadTask.then((res: any) => {
+    return JSON.parse(res.data)
+  })
 }
 
 

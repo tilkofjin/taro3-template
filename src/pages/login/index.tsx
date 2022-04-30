@@ -70,7 +70,7 @@ const Login: React.FC = () => {
           nickName: userInfo.nickName,
         };
         await login(config).then((result) => {
-          if (result.success) {
+          if (result?.success) {
             updateStorage("userInfo", userInfo);
             updateStorage("token", token);
             if (result.data?.memberInfo?.mobile) {
@@ -98,7 +98,7 @@ const Login: React.FC = () => {
       id: userInfo.id,
       code: e.detail.code,
     });
-    if (res.success) {
+    if (res?.success) {
       Taro.reLaunch({
         url: `/pages/personalCenter/index`,
       });
