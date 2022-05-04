@@ -103,3 +103,110 @@ export const throttle = (fuc: Function, delay = 500) => {
     }
   }
 }
+
+
+/**
+ * @description: 图片压缩，H5 平台用
+ * @param {*} file   图片文件
+ * @param {number} quality  转换的图片质量。范围是 0 到 1
+ * @param {number} maxSize  图片最大尺寸，单位 KB
+ * @return {*}
+ */
+ export const compressImg = (file, quality?: number, maxSize = 50) => {
+  let qualitys = 0.52
+  console.log(parseInt((file.size / 1024).toFixed(2)))
+  if (parseInt((file.size / 1024).toFixed(2)) < 1024) {
+    qualitys = 0.85
+  }
+  if (5 * 1024 < parseInt((file.size / 1024).toFixed(2))) {
+    qualitys = 0.92
+  }
+  if (quality) {
+    qualitys = quality
+  }
+  if (file[0]) {
+    // 如果是 file 数组返回 Promise 数组
+    return Promise.all(Array.from(file).map(e => compressImg(e, qualitys)))
+  } else {
+    return new Promise((resolve) => {
+      if (+((file.size / 1024).toFixed(2)) < maxSize) {
+        resolve({ file: file })
+      } else {
+        // 创建 FileReader
+        const reader = new FileReader()
+        // @ts-ignore
+        reader.onload = ({ target: { result: src } }) => {
+          // 创建 img 元素
+          const image = new Image()
+          image.onload = async () => {
+            // 创建 canvas 元素
+            const canvas = document.createElement('canvas')
+            const context = canvas.getContext('2d')
+            let targetWidth = image.width
+            let targetHeight = image.height
+            let originWidth = image.width
+            let originHeight = image.height
+            let maxWidth, maxHeight
+            if (1 * 1024 <= parseInt((file.size / 1024).toFixed(2)) && parseInt((file.size / 1024).toFixed(2)) <= 10 * 1024) {
+              maxWidth = 1600
+              maxHeight = 1600
+              targetWidth = originWidth
+              targetHeight = originHeight
+              // 图片尺寸超过的限制
+              if (originWidth > maxWidth || originHeight > maxHeight) {
+                if (originWidth / originHeight > maxWidth / maxHeight) {
+                  // 更宽，按照宽度限定尺寸
+                  targetWidth = maxWidth
+                  targetHeight = Math.round(maxWidth * (originHeight / originWidth))
+                } else {
+                  targetHeight = maxHeight
+                  targetWidth = Math.round(maxHeight * (originWidth / originHeight))
+                }
+              }
+            }
+            if (10 * 1024 <= parseInt((file.size / 1024).toFixed(2)) && parseInt((file.size / 1024).toFixed(2)) <= 20 * 1024) {
+              maxWidth = 1400
+              maxHeight = 1400
+              targetWidth = originWidth
+              targetHeight = originHeight
+              // 图片尺寸超过的限制
+              if (originWidth > maxWidth || originHeight > maxHeight) {
+                if (originWidth / originHeight > maxWidth / maxHeight) {
+                  // 更宽，按照宽度限定尺寸
+                  targetWidth = maxWidth
+                  targetHeight = Math.round(maxWidth * (originHeight / originWidth))
+                } else {
+                  targetHeight = maxHeight
+                  targetWidth = Math.round(maxHeight * (originWidth / originHeight))
+                }
+              }
+            }
+            canvas.width = targetWidth
+            canvas.height = targetHeight
+            context && context.clearRect(0, 0, targetWidth, targetHeight)
+            // 绘制 canvas
+            context && context.drawImage(image, 0, 0, targetWidth, targetHeight)
+            const canvasURL = canvas.toDataURL(file.type, qualitys)
+            const buffer = window.atob(canvasURL.split(',')[1])
+            let length = buffer.length
+            const bufferArray = new Uint8Array(new ArrayBuffer(length))
+            while (length--) {
+              bufferArray[length] = buffer.charCodeAt(length)
+            }
+            const miniFile = new File([bufferArray], file.name, { type: file.type })
+            resolve({
+              file: miniFile,
+              origin: file,
+              beforeSrc: src,
+              afterSrc: canvasURL,
+              beforeKB: Number((file.size / 1024).toFixed(2)),
+              afterKB: Number((miniFile.size / 1024).toFixed(2))
+            })
+          }
+          image.src = src
+        }
+        reader.readAsDataURL(file)
+      }
+    })
+  }
+}
