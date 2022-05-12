@@ -112,7 +112,7 @@ export const throttle = (fuc: Function, delay = 500) => {
  * @param {number} maxSize  图片最大尺寸，单位 KB
  * @return {*}
  */
- export const compressImg = (file, quality?: number, maxSize = 50) => {
+ export const compressImg = (file, quality?: number, maxSize = 300) => {
   let qualitys = 0.52
   console.log(parseInt((file.size / 1024).toFixed(2)))
   if (parseInt((file.size / 1024).toFixed(2)) < 1024) {
