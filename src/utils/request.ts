@@ -55,7 +55,7 @@ export const uploadFileRequest = async (options) => {
   uploadTask.progress((res) => {
     console.log('上传进度', res.progress)
     console.log('已经上传的数据长度', res.totalBytesSent)
-    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSent)
+    console.log('预期需要上传的数据总长度', res.totalBytesExpectedToSend)
   })
   return await uploadTask.then((res: any) => {
     return JSON.parse(res.data)

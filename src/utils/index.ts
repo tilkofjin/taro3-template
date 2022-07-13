@@ -73,6 +73,7 @@ export const browser = () => {
       iPad: u.indexOf('iPad') > -1, // 是否iPad
       webApp: u.indexOf('Safari') === -1, // 是否web应该程序，没有头部与底部
       weixin: u.indexOf('MicroMessenger') > -1, // 是否微信
+      isSafari: /Safari/.test(u) && !/Chrome/.test(u)  // 是否为 safari 浏览器
     };
   }
   return {}

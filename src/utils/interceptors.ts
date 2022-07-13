@@ -48,8 +48,11 @@ const interceptor = (chain) => {
   // 是否打印日志
   const accountInfo = process.env.TARO_ENV === 'weapp' && Taro.getAccountInfoSync();
   const { envVersion }: any = accountInfo && accountInfo.miniProgram;
-  const getConsole = process.env.NODE_ENV === 'production' || envVersion === 'release' || process.env.TARO_ENV === 'h5'
-  console.log(`请求：http ${method || 'GET'} --> ${url} data: `, data)
+  const getConsole = process.env.NODE_ENV === 'production' || envVersion === 'release'
+
+  if (getConsole) {
+    console.log(`请求：http ${method || 'GET'} --> ${url} data: `, data)
+  }
 
   try {
     return chain.proceed(requestParams)
