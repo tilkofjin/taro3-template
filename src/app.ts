@@ -1,9 +1,11 @@
 import { useDidShow } from '@tarojs/taro';
 import { ReactNode } from 'react'
+import VConsole from 'vconsole';
 import { isWeapp, updateWeapp } from './utils';
 import './app.less'
 
 const App: ReactNode = ({ children }) => {
+  process.env.APP_ENV === 'dev' && new VConsole({ theme: 'dark' });
   // Taro.loadFontFace({
   //   family: 'SFProDisplay',
   //   source: 'url("带https的字体下载地址")',
@@ -15,6 +17,7 @@ const App: ReactNode = ({ children }) => {
       updateWeapp()
     }
   })
+
   return children
 }
 

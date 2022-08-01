@@ -221,7 +221,10 @@ export const throttle = (fuc: Function, delay = 500) => {
   }
 }
 
-
+/**
+ * @description: 检测是否有新版本
+ * @return {*}
+ */
 export const updateWeapp = () => {
   if (Taro.canIUse('getUpdateManager')) {
     const updateManager = Taro.getUpdateManager();

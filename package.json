@@ -13,7 +13,7 @@
 		"build:swan": "taro build --type swan",
 		"build:alipay": "taro build --type alipay",
 		"build:tt": "taro build --type tt",
-		"build:h5-dev": "taro build --type h5",
+		"build:h5-dev": "cross-env APP_ENV=dev taro build --type h5",
 		"build:h5-uat": "cross-env APP_ENV=uat taro build --type h5",
 		"build:h5-prod": "cross-env NODE_ENV=production taro build --type h5",
 		"build:rn": "taro build --type rn",
@@ -50,7 +50,8 @@
 		"classnames": "^2.3.1",
 		"dayjs": "^1.11.3",
 		"react": "^17.0.0",
-		"react-dom": "^17.0.0"
+		"react-dom": "^17.0.0",
+		"vconsole": "^3.14.6"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.0",
