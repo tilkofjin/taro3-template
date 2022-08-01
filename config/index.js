@@ -107,6 +107,14 @@ const config = {
     publicPath: "/",
     staticDirectory: "static",
     esnextModules: [/@antmjs[\\/]vantui/],
+    output: {
+      filename: 'js/[name].[hash].js',
+      chunkFilename: 'js/[name].[chunkhash].js'
+    },
+    miniCssExtractPluginOption: {
+      filename: 'css/[name].[hash].css',
+      chunkFilename: 'css/[name].[chunkhash].css',
+    },
     postcss: {
       autoprefixer: {
         enable: true,
