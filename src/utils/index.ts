@@ -47,13 +47,22 @@ export const getCurrentPageUrl = () => {
 // 跳转至登录页
 export const pageToLogin = () => {
   const path = getCurrentPageUrl()
-  if (!path.includes('login')) {
+  if (!path?.includes('login')) {
     Taro.navigateTo({
       url: "/pages/login/index"
     });
   }
 }
 
+// 判断环境是否为 H5
+export const isH5 = () => {
+  return Taro.getEnv() === Taro.ENV_TYPE.WEB;
+}
+
+// 判断环境是否为 微信小程序
+export const isWeapp = () => {
+  return Taro.getEnv() === Taro.ENV_TYPE.WEAPP;
+}
 
 /** 判断用户浏览器终端信息
  *  browser.versions.ios 判断是否是IOS设备
@@ -211,3 +220,37 @@ export const throttle = (fuc: Function, delay = 500) => {
     })
   }
 }
+
+
+export const updateWeapp = () => {
+  if (Taro.canIUse('getUpdateManager')) {
+    const updateManager = Taro.getUpdateManager();
+    updateManager.onCheckForUpdate(() => {
+      console.log('checking app update .......');
+    });
+    updateManager.onUpdateReady(() => {
+      Taro.showModal({
+        title: '更新提示',
+        content: '新版本已经准备好，是否重启应用？',
+        success: (res) => {
+          if (res.confirm) {
+            updateManager.applyUpdate();
+          }
+        },
+      });
+    });
+    updateManager.onUpdateFailed(() => {
+      Taro.showModal({
+        title: '更新提示',
+        content: '新版本下载失败，请检查你的微信',
+        showCancel: false,
+      });
+    });
+  } else {
+    Taro.showModal({
+      title: '微信升级',
+      content: '当前微信版本过低，部分功能无法使用，请升级到最新版本',
+      showCancel: false,
+    });
+  }
+};
