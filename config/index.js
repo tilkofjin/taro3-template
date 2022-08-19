@@ -12,6 +12,15 @@ const config = {
     750: 1,
     828: 1.81 / 2
   },
+  compiler: {
+    type: "webpack5",
+    prebundle: {
+      enable: false
+    }
+  },
+  cache: {
+    enable: true
+  },
   sourceRoot: "src",
   outputRoot: "dist",
   plugins: [],
@@ -101,19 +110,22 @@ const config = {
     },
     optimizeMainPackage: {
       enable: true
-    },
+    }
   },
   h5: {
     publicPath: "/",
+    esbuild: {
+      logOverride: { "this-is-undefined-in-esm": "silent" }
+    },
     staticDirectory: "static",
     esnextModules: [/@antmjs[\\/]vantui/],
     output: {
-      filename: 'js/[name].[hash].js',
-      chunkFilename: 'js/[name].[chunkhash].js'
+      filename: "js/[name].[hash].js",
+      chunkFilename: "js/[name].[chunkhash].js"
     },
     miniCssExtractPluginOption: {
-      filename: 'css/[name].[hash].css',
-      chunkFilename: 'css/[name].[chunkhash].css',
+      filename: "css/[name].[hash].css",
+      chunkFilename: "css/[name].[chunkhash].css"
     },
     postcss: {
       autoprefixer: {

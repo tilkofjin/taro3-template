@@ -8,7 +8,7 @@ module.exports = {
         framework: "react",
         ts: true,
         hot: true,
-      }
+      },
     ]
   ],
   plugins: [

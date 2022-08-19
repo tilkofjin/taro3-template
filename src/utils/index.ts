@@ -6,14 +6,14 @@ const { baseUrl, baseImgUrl } = getBaseUrl();
 // 获取完整请求路径
 export const getFullUrl = (url: string) => {
   if (!url) throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
-  if (url.includes('https://') || url.includes('http://')) return url
+  if (url.startsWith('https') || url.startsWith('http')) return url
   return baseUrl + url
 }
 
 // 获取完整服务器图片路径
 export const getFullImgUrl = (url: string) => {
   if (!url) throw new Error(`请求路径配置错误, 请正确配置请求路径后重试!~`)
-  if (url.includes('https://') || url.includes('http://')) return url
+  if (url.startsWith('https') || url.startsWith('http')) return url
   return `${baseImgUrl}?path=${url}`
 }
 

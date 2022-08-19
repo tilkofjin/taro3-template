@@ -50,18 +50,9 @@ const interceptor = (chain) => {
   const { envVersion }: any = accountInfo && accountInfo.miniProgram;
   const getConsole = process.env.NODE_ENV === 'production' || envVersion === 'release'
 
-  if (getConsole) {
-    console.log(`请求：http ${method || 'GET'} --> ${url} data: `, data)
-  }
-
   try {
     return chain.proceed(requestParams)
       .then(res => {
-        if (getConsole) {
-          console.log(
-            `响应: ${new Date().toLocaleString()}: http <-- ${url} result:`, res?.data
-          );
-        }
         const msg: string = res?.data?.code && codeMessage[res?.data?.code] || res?.data?.message
         switch (res.data.code) {
           case 401:
@@ -78,6 +69,9 @@ const interceptor = (chain) => {
         }
       })
   } catch (error) {
+    if (getConsole) {
+      console.log(`请求错误，${new Date().toLocaleString()}：http ${method || 'GET'} --> ${url} data: `, data)
+    }
     Taro.hideLoading()
     return Promise.reject(error)
   }

@@ -7,6 +7,7 @@ const getAppId = () => {
   }
 }
 
+
 export default defineAppConfig({
   pages: [
     'pages/personalCenter/index',
