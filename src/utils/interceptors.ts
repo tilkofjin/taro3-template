@@ -20,18 +20,19 @@ const codeMessage: Record<number, string> = {
   504: '网关超时。',
 };
 
-export const erroStatus = (statusCode: number, data?: any) => {
+export const erroStatus = (statusCode: number, data?: RequestRes.ResData) => {
   Taro.hideLoading()
+  const msg: string = data?.code && codeMessage[data?.code] || data?.message
   switch (statusCode) {
     case 401:
     case 403:
       Taro.setStorageSync("token", "")
       pageToLogin()
-      return Promise.reject(codeMessage[statusCode])
+      return Promise.reject(msg)
     case 404:
     case 500:
     case 502:
-      return Promise.reject(codeMessage[statusCode])
+      return Promise.reject(msg)
     default:
       return data
   }
@@ -46,28 +47,12 @@ const interceptor = (chain) => {
     token,
   }
   // 是否打印日志
-  const accountInfo = process.env.TARO_ENV === 'weapp' && Taro.getAccountInfoSync();
+  const accountInfo = IS_WEAPP && Taro.getAccountInfoSync();
   const { envVersion }: any = accountInfo && accountInfo.miniProgram;
   const getConsole = process.env.NODE_ENV === 'production' || envVersion === 'release'
 
   try {
-    return chain.proceed(requestParams)
-      .then(res => {
-        const msg: string = res?.data?.code && codeMessage[res?.data?.code] || res?.data?.message
-        switch (res.data.code) {
-          case 401:
-          case 403:
-            Taro.setStorageSync("token", "")
-            pageToLogin()
-            return Promise.reject(msg)
-          case 404:
-          case 500:
-          case 502:
-            return Promise.reject(msg)
-          default:
-            return res.data
-        }
-      })
+    return chain.proceed(requestParams).then(res => erroStatus(res?.data?.code, res.data))
   } catch (error) {
     if (getConsole) {
       console.log(`请求错误，${new Date().toLocaleString()}：http ${method || 'GET'} --> ${url} data: `, data)

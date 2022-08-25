@@ -1,16 +1,11 @@
 import Taro from "@tarojs/taro"
 
-// 当前开发环境变量
-export const NODE_ENV = process.env.NODE_ENV
-// 当前平台环境变量
-export const TARO_ENV = process.env.TARO_ENV
-
 export const getBaseUrl = () => {
   // 获取当前帐号信息
-  const accountInfo = TARO_ENV === 'weapp' && Taro.getAccountInfoSync();
+  const accountInfo = IS_WEAPP && Taro.getAccountInfoSync();
   const { envVersion }: any = accountInfo && accountInfo.miniProgram;
   const baseRequest: any = {}
-  if (process.env.TARO_ENV === 'weapp') {
+  if (IS_WEAPP) {
     switch (envVersion) {
       case 'develop':
         baseRequest.baseUrl = 'https://www.xxx.com';
@@ -26,7 +21,7 @@ export const getBaseUrl = () => {
         break;
     }
   }
-  if (process.env.TARO_ENV === 'h5') {
+  if (IS_H5) {
     baseRequest.baseUrl = '/api';
   }
   return baseRequest

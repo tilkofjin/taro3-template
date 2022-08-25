@@ -2,12 +2,22 @@
   "miniprogramRoot": "./dist",
   "projectname": "taro3-template",
   "description": "taro3 template",
-  "appid": "touristappid",
+  "appid": "",
   "setting": {
     "urlCheck": true,
     "es6": false,
     "postcss": false,
-    "minified": false
+    "minified": false,
+    "preloadBackgroundData": false,
+		"newFeature": true,
+		"autoAudits": false,
+		"coverView": true,
+		"showShadowRootInWxmlPanel": false,
+		"scopeDataCheck": false,
+		"useCompilerModule": false
   },
-  "compileType": "miniprogram"
+  "compileType": "miniprogram",
+  "simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
 }

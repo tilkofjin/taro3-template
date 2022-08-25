@@ -16,19 +16,38 @@
     "baseUrl": ".",
     "rootDir": ".",
     "jsx": "react-jsx",
+    "jsxFactory": "React.createElement",
     "allowJs": true,
     "resolveJsonModule": true,
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "global.d.ts"
     ],
     "paths": {
-      "@/components/*": ["./src/components/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@/assets/*": [ "./src/assets/*"],
-      "@/services/*": [ "./src/services/*"],
-      "@/config/*": [ "./src/config/*"]
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/utils/*": [
+        "./src/utils/*"
+      ],
+      "@/assets/*": [
+        "./src/assets/*"
+      ],
+      "@/services/*": [
+        "./src/services/*"
+      ],
+      "@/config/*": [
+        "./src/config/*"
+      ]
     }
   },
-  "include": ["./src", "global.d.ts"],
+  "include": [
+    "./src",
+    "global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "compileOnSave": false
 }

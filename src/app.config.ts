@@ -1,14 +1,4 @@
-const getAppId = () => {
-  switch (process.env.TARO_ENV) {
-    case 'weapp':
-      return "weappId"
-    case 'h5':
-      return 'app'  // 默认值对应 index.html 中的 Id 根节点，默认即可，无需修改
-  }
-}
-
-
-export default defineAppConfig({
+export default {
   pages: [
     'pages/personalCenter/index',
     'pages/home/index',
@@ -20,7 +10,7 @@ export default defineAppConfig({
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
     navigationBarTextStyle: 'black',
-    navigationBarTitleText: 'Taro3.4.2小程序基础模板',
+    navigationBarTitleText: 'Taro3.5.4小程序基础模板',
   },
   tabBar: {
     color: "#999999",
@@ -50,6 +40,5 @@ export default defineAppConfig({
       desc: '你的位置信息将用于小程序位置接口的效果展示'
     }
   },
-  appId: getAppId(),
   requiredBackgroundModes: ["audio", "location"],
-})
+}

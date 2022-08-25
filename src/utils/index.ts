@@ -34,7 +34,7 @@ export const updateStorage = (key: string, data: any) => {
 
 // 获取当前路由
 export const getCurrentPageUrl = () => {
-  if (process.env.TARO_ENV === 'weapp') {
+  if (IS_WEAPP) {
     const pages = Taro.getCurrentPages()
     const currentPage = pages[pages.length - 1]
     return currentPage.route
@@ -54,15 +54,6 @@ export const pageToLogin = () => {
   }
 }
 
-// 判断环境是否为 H5
-export const isH5 = () => {
-  return Taro.getEnv() === Taro.ENV_TYPE.WEB;
-}
-
-// 判断环境是否为 微信小程序
-export const isWeapp = () => {
-  return Taro.getEnv() === Taro.ENV_TYPE.WEAPP;
-}
 
 /** 判断用户浏览器终端信息
  *  browser.versions.ios 判断是否是IOS设备

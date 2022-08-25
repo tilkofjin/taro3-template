@@ -1,0 +1,107 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\S\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js dev:rn
+
+PATH: 
+  C:\Program Files\Eclipse Foundation\jdk-8.0.302.8-hotspot\bin;C:\Program Files (x86)\NetSarang\Xshell 6\;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Users\S\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Program Files (x86)\dotnet\;C:\Program Files (x86)\Tencent\微信web开发者工具\dll;C:\Users\S\.cargo\bin;C:\Program Files\Eclipse Foundation\jdk-8.0.302.8-hotspot\jre\bin;C:\Users\S\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\S\AppData\Local\Programs\Python\Python39\;C:\Users\S\AppData\Local\Microsoft\WindowsApps;C:\Users\S\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\S\AppData\Roaming\npm;E:\androidSDK\platform-tools;E:\androidSDK\emulator;E:\androidSDK\tools;E:\androidSDK\tools\bin
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  16.13.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: E:\taro3-template\package.json: Unexpected token } in JSON at position 1892
+      at JSON.parse (<anonymous>)
+      at C:\Users\S\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Users\S\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:310:30)
+      at C:\Users\S\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+  	"name": "taro3-template",
+  	"version": "1.0.0",
+  	"private": true,
+  	"description": "基于 taro3.5.4 基础脚手架!~",
+  	"templateInfo": {
+  		"name": "default",
+  		"typescript": true,
+  		"css": "less"
+  	},
+  	"scripts": {
+  		"build:weapp": "taro build --type weapp",
+  		"build:swan": "taro build --type swan",
+  		"build:alipay": "taro build --type alipay",
+  		"build:tt": "taro build --type tt",
+  		"build:h5-dev": "cross-env APP_ENV=dev taro build --type h5",
+  		"build:h5-uat": "cross-env APP_ENV=uat taro build --type h5",
+  		"build:h5-prod": "cross-env NODE_ENV=production taro build --type h5",
+  		"build:rn": "taro build --type rn",
+  		"build:qq": "taro build --type qq",
+  		"build:jd": "taro build --type jd",
+  		"build:quickapp": "taro build --type quickapp",
+  		"dev:weapp": "npm run build:weapp -- --watch",
+  		"dev:swan": "npm run build:swan -- --watch",
+  		"dev:alipay": "npm run build:alipay -- --watch",
+  		"dev:tt": "npm run build:tt -- --watch",
+  		"dev:h5-uat": "npm run build:h5-uat -- --watch",
+  		"dev:h5-dev": "npm run build:h5-dev -- --watch",
+  		"dev:h5-prod": "npm run build:h5-prod -- --watch",
+  		"dev:rn": "npm run build:rn -- --watch --qr",
+  		"dev:qq": "npm run build:qq -- --watch",
+  		"dev:jd": "npm run build:jd -- --watch",
+  		"dev:quickapp": "npm run build:quickapp -- --watch"
+  	},
+  	"browserslist": [
+  		"last 3 versions",
+  		"Android >= 4.1",
+  		"ios >= 8"
+  	],
+  	"author": "tilkofjin",
+  	"dependencies": {
+  		"@antmjs/vantui": "^1.9.21",
+  		"@babel/runtime": "^7.7.7",
+  		"@tarojs/cli": "3.5.4",
+  		"@tarojs/components": "3.5.4",
+  		"@tarojs/plugin-framework-react": "3.5.4",
+  		"@tarojs/react": "3.5.4",
+  		"@tarojs/rn-runner": "3.5.4",
+  		"@tarojs/runtime": "3.5.4",
+  		"@tarojs/taro": "3.5.4",
+  		"@tarojs/taro-rn": "3.5.4",
+  		"@tarojs/webpack5-runner": "3.5.4",
+  		"classnames": "^2.3.1",
+  		"dayjs": "^1.11.3",
+  		"react": "^17.0.2",
+  		"react-dom": "^17.0.2",
+  		"vconsole": "^3.14.6",
+  		"webpack": "^5.74.0",
+  	},
+  	"devDependencies": {
+  		"@babel/core": "^7.8.0",
+  		"@types/react": "^17.0.2",
+  		"@types/webpack-env": "^1.13.6",
+  		"@typescript-eslint/eslint-plugin": "^4.15.1",
+  		"@typescript-eslint/parser": "^4.15.1",
+  		"babel-plugin-import": "^1.13.3",
+  		"babel-preset-taro": "3.5.4",
+  		"cross-env": "^7.0.3",
+  		"eslint": "^6.8.0",
+  		"eslint-config-taro": "3.5.4",
+  		"eslint-plugin-import": "^2.12.0",
+  		"eslint-plugin-react": "^7.8.2",
+  		"eslint-plugin-react-hooks": "^4.2.0",
+  		"stylelint": "^14.4.0",
+  		"typescript": "^4.1.0"
+  	}
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

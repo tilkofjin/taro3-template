@@ -13,18 +13,16 @@ const config = {
     828: 1.81 / 2
   },
   compiler: {
-    type: "webpack5",
-    prebundle: {
-      enable: false
-    }
-  },
-  cache: {
-    enable: true
+    type: "webpack5"
   },
   sourceRoot: "src",
-  outputRoot: "dist",
+  outputRoot: `dist/${process.env.TARO_ENV}`,
   plugins: [],
-  defineConstants: {},
+  defineConstants: {
+    IS_H5: process.env.TARO_ENV === "h5",
+    IS_RN: process.env.TARO_ENV === "rn",
+    IS_WEAPP: process.env.TARO_ENV === "weapp"
+  },
   alias: {
     "@/utils": path.resolve(__dirname, "..", "src/utils"),
     "@/components": path.resolve(__dirname, "..", "src/components"),
@@ -147,7 +145,7 @@ const config = {
   }
 };
 
-export default function(merge) {
+module.exports = function(merge) {
   if (process.env.APP_ENV && process.env.APP_ENV === "uat") {
     return merge({}, config, require("./uat"));
   } else if (process.env.NODE_ENV === "development") {
@@ -155,4 +153,4 @@ export default function(merge) {
   } else {
     return merge({}, config, require("./prod"));
   }
-}
+};
