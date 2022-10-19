@@ -13,7 +13,11 @@ const config = {
     828: 1.81 / 2
   },
   compiler: {
-    type: "webpack5"
+    type: 'webpack5',
+    // 仅 webpack5 支持依赖预编译配置
+    prebundle: {
+      enable: true
+    }
   },
   sourceRoot: "src",
   outputRoot: `dist/${process.env.TARO_ENV}`,
