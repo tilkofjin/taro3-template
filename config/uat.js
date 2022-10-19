@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    NODE_ENV: '"uat"'
+    APP_ENV: '"uat"'
   },
   defineConstants: {
   },

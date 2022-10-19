@@ -1,6 +1,9 @@
 import Taro from "@tarojs/taro"
 import { getBaseUrl } from "@/config/env";
+import dayjs from 'dayjs';
+import locale from '@/utils/dayjsLocal';
 
+dayjs.locale(locale);
 const { baseUrl, baseImgUrl } = getBaseUrl();
 
 // 获取完整请求路径
@@ -32,6 +35,33 @@ export const updateStorage = (key: string, data: any) => {
   }
 }
 
+/**
+ * @description: 隐藏手机号中间4位数
+ * @param {string} phone
+ * @return {*}
+ */
+ export const hiddenMobile = (phone: string) => {
+  const reg = /^(\d{3})\d{4}(\d{4})$/;
+  return phone.replace(reg, '$1****$2');
+};
+
+/**
+ * @description: 两个时间具体差值拼接
+ * @param {start, end}
+ * @return {boolean}
+ */
+ export const timeDiff = (start: string, end: string) => {
+  if (!start || !end) throw Error('开始时间与结束时间必填');
+  const time: number = dayjs(start).diff(dayjs(end), 'minute');
+  if (time < 0) return null;
+  const minute = time % 60;
+  const hour = ~~Number((time / 60) % 24);
+  const day = Number(time / 60 / 24) << 0;
+  return `${day ? day + '天' : ''}${hour ? hour + '小时' : ''}${
+    minute ? minute + '分钟' : ''
+  }`;
+};
+
 // 获取当前路由
 export const getCurrentPageUrl = () => {
   if (IS_WEAPP) {
@@ -54,30 +84,37 @@ export const pageToLogin = () => {
   }
 }
 
-
-/** 判断用户浏览器终端信息
- *  browser.versions.ios 判断是否是IOS设备
+/**
+ * @description: 判断浏览器内核、手机系统等，使用 browser.version.ios
+ * @return {*}
  */
-export const browser = () => {
-  if (navigator) {
-    const u = navigator ? navigator.userAgent : '';
-    return {
-      trident: u.indexOf('Trident') > -1, // IE内核
-      presto: u.indexOf('Presto') > -1, // opera内核
-      webKit: u.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
-      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') === -1, // 火狐内核
-      mobile: !!u.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端
-      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-      android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, // android终端
-      iPhone: u.indexOf('iPhone') > -1, // 是否为iPhone或者QQHD浏览器
-      iPad: u.indexOf('iPad') > -1, // 是否iPad
-      webApp: u.indexOf('Safari') === -1, // 是否web应该程序，没有头部与底部
-      weixin: u.indexOf('MicroMessenger') > -1, // 是否微信
-      isSafari: /Safari/.test(u) && !/Chrome/.test(u)  // 是否为 safari 浏览器
-    };
-  }
-  return {}
-}
+ export const getBrower = () => {
+  const u = navigator.userAgent;
+  const ua = navigator.userAgent.toLocaleLowerCase();
+  return {
+    trident: u.indexOf('Trident') > -1, // IE内核
+    presto: u.indexOf('Presto') > -1, // opera内核
+    webKit: u.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
+    gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') === -1, // 火狐内核
+    mobile: !!u.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端
+    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), // IOS终端
+    android: u.indexOf('Android') > -1 || u.indexOf('Adr') > -1, // 安卓终端
+    iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, // 是否为iphone或QQHD浏览器
+    iPad: u.indexOf('iPad') > -1, // 是否为iPad
+    webApp: u.indexOf('Safari') === -1, // 是否web应用程序，没有头部与底部
+    QQbrw: u.indexOf('MQQBrowser') > -1, // QQ浏览器
+    weiXin: u.indexOf('MicroMessenger') > -1, // 微信
+    QQ: String(ua.match(/QQ/i)) === 'qq', // QQ
+    weiBo: String(ua.match(/WeiBo/i)) === 'weibo', // 微博
+    ucLowEnd: u.indexOf('UCWEB7.') > -1, //
+    ucSpecial: u.indexOf('rv:1.2.3.4') > -1,
+    webview:
+      !(u.match(/Chrome\/([\d.]+)/) || u.match(/CriOS\/([\d.]+)/)) &&
+      u.match(/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/),
+    Symbian: u.indexOf('Symbian') > -1,
+    ucSB: u.indexOf('Firofox/1.') > -1,
+  };
+};
 
 // 生成随机数
 export const randomId = len => {
