@@ -17,7 +17,7 @@ declare namespace NodeJS {
     globalData: object;
   }
 }
-
 declare const IS_H5: any;
 declare const IS_WEAPP: any;
 declare const IS_RN: any;
+declare const LOGIN_PUB_KEY: string;

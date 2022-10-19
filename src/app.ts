@@ -2,7 +2,10 @@ import { useDidShow } from '@tarojs/taro';
 import { ReactNode } from 'react'
 import VConsole from 'vconsole';
 import { updateWeapp } from './utils';
+import { jsBridge, setupWebViewJavascriptBridge } from './utils/jsBridge';
 import './app.less'
+
+setupWebViewJavascriptBridge(jsBridge);
 
 const App: ReactNode = ({ children }) => {
   IS_H5 && process.env.APP_ENV === 'dev' && new VConsole({ theme: 'dark' });

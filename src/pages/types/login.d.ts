@@ -1,7 +1,7 @@
 declare namespace Apis {
   type LoginParams = {
-    avatar?: string,
-    nickName?: string,
+    password?: string,
+    username?: string,
     code?: string
   }
   type VertifyPhone = {

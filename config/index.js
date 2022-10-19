@@ -13,11 +13,13 @@ const config = {
     828: 1.81 / 2
   },
   compiler: {
-    type: 'webpack5',
-    // 仅 webpack5 支持依赖预编译配置
+    type: "webpack5",
     prebundle: {
-      enable: true
+      enable: true // 仅 webpack5 支持依赖预编译配置
     }
+  },
+  cache: {
+    enable: false // 持久化缓存配置
   },
   sourceRoot: "src",
   outputRoot: `dist/${process.env.TARO_ENV}`,
@@ -25,7 +27,9 @@ const config = {
   defineConstants: {
     IS_H5: process.env.TARO_ENV === "h5",
     IS_RN: process.env.TARO_ENV === "rn",
-    IS_WEAPP: process.env.TARO_ENV === "weapp"
+    IS_WEAPP: process.env.TARO_ENV === "weapp",
+    LOGIN_PUB_KEY:
+      '"MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALw7c4t+3xq3tzPESnciySAKJ+erVAjeSzkHJmHmA4y0AM1/WTTFHBlN3CsyXOf52fuE/KENRpJJ9UGku9sN8b0CAwEAEW=="'
   },
   alias: {
     "@/utils": path.resolve(__dirname, "..", "src/utils"),
@@ -116,11 +120,17 @@ const config = {
   },
   h5: {
     publicPath: "/",
-    esbuild: {
-      logOverride: { "this-is-undefined-in-esm": "silent" }
-    },
     staticDirectory: "static",
     esnextModules: [/@antmjs[\\/]vantui/],
+    esbuild: {
+      logOverride: { "this-is-undefined-in-esm": "silent" },
+      minify: {
+        enable: true
+      }
+    },
+    csso: {
+      enable: true
+    },
     output: {
       filename: "js/[name].[hash].js",
       chunkFilename: "js/[name].[chunkhash].js"
@@ -149,12 +159,12 @@ const config = {
   }
 };
 
-module.exports = function(merge) {
-  if (process.env.APP_ENV && process.env.APP_ENV === "uat") {
+export default function(merge) {
+  if (process.env.APP_ENV === "uat") {
     return merge({}, config, require("./uat"));
-  } else if (process.env.NODE_ENV === "development") {
-    return merge({}, config, require("./dev"));
-  } else {
-    return merge({}, config, require("./prod"));
   }
-};
+  if (process.env.APP_ENV === "dev" || process.env.NODE_ENV === "development") {
+    return merge({}, config, require("./dev"));
+  }
+  return merge({}, config, require("./prod"));
+}

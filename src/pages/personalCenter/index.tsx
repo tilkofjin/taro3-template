@@ -1,9 +1,9 @@
 import { View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import styles from "./index.module.less";
 
-const Home: React.FC = () => {
+const Home: FC = () => {
   useEffect(() => {}, []);
   return (
     <View className={styles.container}>

@@ -10,7 +10,7 @@ module.exports = {
     devServer: {
       proxy: {
         "/api": {
-          target: '',
+          target: 'http://xxx.xxx.xxx.xxx:8000',
           changeOrigin: true,
           pathRewrite: {
             "^": "",
