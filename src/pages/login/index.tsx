@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useState } from "react";
+import React, { FC, useLayoutEffect, useState } from "react";
 import { Form, FormItem, Icon, Notify } from "@antmjs/vantui";
 import { View, Image, Input } from "@tarojs/components";
 import { login } from "@/services/login";

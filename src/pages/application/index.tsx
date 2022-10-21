@@ -1,8 +1,8 @@
 import { View, Text } from "@tarojs/components";
-import { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import styles from "./index.module.less";
 
-const Application: React.FC = () => {
+const Application: FC = () => {
   useEffect(() => {}, []);
 
   return (

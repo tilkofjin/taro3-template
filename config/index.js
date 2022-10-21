@@ -12,14 +12,9 @@ const config = {
     750: 1,
     828: 1.81 / 2
   },
-  compiler: {
-    type: "webpack5",
-    prebundle: {
-      enable: true // 仅 webpack5 支持依赖预编译配置
-    }
-  },
+  compiler: "webpack5",
   cache: {
-    enable: false // 持久化缓存配置
+    enable: true // 持久化缓存配置
   },
   sourceRoot: "src",
   outputRoot: `dist/${process.env.TARO_ENV}`,
@@ -116,21 +111,15 @@ const config = {
     },
     optimizeMainPackage: {
       enable: true
+    },
+    miniCssExtractPluginOption: {
+      ignoreOrder: true
     }
   },
   h5: {
     publicPath: "/",
     staticDirectory: "static",
     esnextModules: [/@antmjs[\\/]vantui/],
-    esbuild: {
-      logOverride: { "this-is-undefined-in-esm": "silent" },
-      minify: {
-        enable: true
-      }
-    },
-    csso: {
-      enable: true
-    },
     output: {
       filename: "js/[name].[hash].js",
       chunkFilename: "js/[name].[chunkhash].js"
@@ -162,9 +151,9 @@ const config = {
 export default function(merge) {
   if (process.env.APP_ENV === "uat") {
     return merge({}, config, require("./uat"));
-  }
-  if (process.env.APP_ENV === "dev" || process.env.NODE_ENV === "development") {
+  } else if (process.env.APP_ENV === "dev") {
     return merge({}, config, require("./dev"));
+  } else {
+    return merge({}, config, require("./prod"));
   }
-  return merge({}, config, require("./prod"));
 }

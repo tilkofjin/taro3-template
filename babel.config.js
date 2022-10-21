@@ -7,7 +7,7 @@ module.exports = {
       {
         framework: "react",
         ts: true,
-        hot: true
+        hot: process.env.TARO_ENV !== 'h5'
       }
     ]
   ],

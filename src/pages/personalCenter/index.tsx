@@ -1,6 +1,6 @@
 import { View } from "@tarojs/components";
+import React, { FC, useEffect } from "react";
 import Taro from "@tarojs/taro";
-import { FC, useEffect } from "react";
 import styles from "./index.module.less";
 
 const Home: FC = () => {
@@ -10,7 +10,7 @@ const Home: FC = () => {
       <View
         onClick={() =>
           Taro.navigateTo({
-            url: `/pages/login/index`
+            url: `/pages/login/index`,
           })
         }
       >

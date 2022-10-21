@@ -121,28 +121,6 @@ export const randomId = len => {
   return Math.random().toString(36).substring(3, len);
 }
 
-// 防抖
-export const debounce = (fuc: Function, delay = 1000) => {
-  let timer: ReturnType<typeof setTimeout>
-  return (...arg) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => fuc.apply(this, arg), delay)
-  }
-}
-
-// 节流
-export const throttle = (fuc: Function, delay = 500) => {
-  let previous = 0
-  return (...args) => {
-    const now = Date.now()
-    if (now - previous > delay) {
-      fuc.apply(this, args)
-      previous = now
-    }
-  }
-}
-
-
 /**
  * @description: 图片压缩，H5 平台用
  * @param {*} file   图片文件

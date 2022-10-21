@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro";
 import { View, Text } from "@tarojs/components";
-import { FC } from "react";
+import React, { FC } from "react";
 import styles from "./index.module.less";
 
 const Home: FC = () => {

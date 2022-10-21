@@ -10,7 +10,7 @@ export default {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
     navigationBarTextStyle: 'black',
-    navigationBarTitleText: 'taro3.5.6小程序基础模板',
+    navigationBarTitleText: 'taro3.5.7小程序基础模板',
   },
   tabBar: {
     color: "#999999",
